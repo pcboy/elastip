@@ -1,0 +1,12 @@
+#!/usr/bin/env ruby
+
+require 'elastip'
+
+project, env = ARGV.take(2)
+
+if !project or !env
+  abort "Usage: elastip <project name regexp> <environnement (e.g staging production)>\n" \
+        "Example: elastip 'my_pro*ect' production"
+end
+
+puts Elastip::Elastip.new(project, env).ip.join("\n")
