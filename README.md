@@ -27,7 +27,7 @@ $> elastip 'pr*ject\d+' staging
 10.0.15.42
 ```
 
-You got the idea. You can then use it directly in an alias doing `ssh ec2-user@\`elastip project-name production\``
+You got the idea. You can then use it directly in an alias doing `ssh ec2-user@$(elastip project-name production)`
 
 
 ## Contributing
