@@ -2,7 +2,6 @@ sudo: false
 language: ruby
 rvm:
   - 2.2.1
-before_install: gem install bundler -v 1.13
 script: rake
 deploy:
   provider: rubygems
