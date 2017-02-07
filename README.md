@@ -1,6 +1,6 @@
 # Elastip
 
-Get your AWS elastic beanstalk active instances private IP￼Edit
+Get your AWS elastic beanstalk active instances private IP
 
 ## Installation
 
