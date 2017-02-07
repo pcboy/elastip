@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/pcboy/elastip.svg?branch=master)](https://travis-ci.org/pcboy/elastip)
+
 # Elastip
 
 Get your AWS elastic beanstalk active instances private IP
