@@ -21,7 +21,7 @@ module Elastip
       instances = ec2_instances
 
       target_instances = active_envs.map do |active|
-        instance = instances.find{|x| x[:tags].any?{|y| active == y[:value] }}
+        instance = instances.find{|x| x[:tags].any?{|y| active == y[:value] } && x[:state][:name] != 'terminated'}
         {instance: active, ip: instance[:private_ip_address]}
       end
       target_instances.map{|x| x[:ip]}
