@@ -29,6 +29,14 @@ $> elastip 'pr*ject\d+' staging
 10.0.15.42
 ```
 
+If you want to also list the non Healthy instances (the red ones for instance), you can add the --all option
+
+```
+$> elastip project_name production --all
+10.0.15.12
+10.0.15.16
+```
+
 You got the idea. You can then use it directly in an alias doing `ssh ec2-user@$(elastip project-name production)`
 
 

@@ -1,12 +1,18 @@
 #!/usr/bin/env ruby
 
+begin
+  Object.const_get('Elastip')
+rescue NameError
+  require 'bundler/setup'
+end
+
 require 'elastip'
 
-project, env = ARGV.take(2)
-
+project, env, options = ARGV
+options ||= []
 if !project or !env
-  abort "Usage: elastip <project name regexp> <environnement (e.g staging production)>\n" \
+  abort "Usage: elastip <project name regexp> <environnement (e.g staging production)> [--all]\n" \
         "Example: elastip 'my_pro*ect' production"
 end
 
-puts Elastip::Elastip.new(project, env).ip.join("\n")
+puts Elastip::Elastip.new(project, env, options).ip.join("\n")

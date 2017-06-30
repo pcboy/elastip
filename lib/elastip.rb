@@ -5,16 +5,19 @@ require 'aws-sdk'
 
 module Elastip
   class Elastip
-    def initialize(project, env)
+    def initialize(project, env, options=[])
       abort "You need to specify a project and an environnement (e.g staging,production)" if !project or !env
       @project_re = Regexp.new(project)
       @env = env
+      @all = options.include?('--all')
     end
 
     def ip
       active_envs = environments.map do |env|
-        if env[:health] == "Green" && @project_re =~ env[:application_name].downcase && env[:environment_name].include?(@env)
-          env[:environment_name]
+        if @project_re =~ env[:application_name].downcase && env[:environment_name].include?(@env)
+          if @all || env[:health] == 'Green'
+            env[:environment_name]
+          end
         end
       end.compact
 
@@ -22,8 +25,9 @@ module Elastip
 
       target_instances = active_envs.map do |active|
         instance = instances.find{|x| x[:tags].any?{|y| active == y[:value] } && x[:state][:name] != 'terminated'}
-        {instance: active, ip: instance[:private_ip_address]}
-      end
+        {instance: active, ip: instance[:private_ip_address]} if instance
+      end.compact
+      STDERR.puts target_instances.inspect
       target_instances.map{|x| x[:ip]}
     end
 
