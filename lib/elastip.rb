@@ -14,7 +14,7 @@ module Elastip
 
     def ip
       active_envs = environments.map do |env|
-        if @project_re =~ env[:application_name].downcase && env[:environment_name].include?(@env)
+        if @project_re =~ env[:application_name] && env[:environment_name].include?(@env)
           if @all || env[:health] == 'Green'
             env[:environment_name]
           end
