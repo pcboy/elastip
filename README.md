@@ -40,6 +40,14 @@ $> elastip project_name production --all
 You got the idea. You can then use it directly in an alias doing `ssh ec2-user@$(elastip project-name production)`
 
 
+### Killing the inactive instances
+```
+$> elastip project_name production --inactive --terminate
+$>
+```
+
+Careful with this one but it'll terminate all the instances marked as 'inactive' in their cname.
+
 ## Contributing
 
 Bug reports and pull requests are welcome on GitHub at https://github.com/pcboy/elastip. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.

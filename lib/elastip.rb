@@ -5,17 +5,17 @@ require 'aws-sdk'
 
 module Elastip
   class Elastip
-    def initialize(project, env, options=[])
+    def initialize(project, env, all: false)
       abort "You need to specify a project and an environnement (e.g staging,production)" if !project or !env
       @project_re = Regexp.new(project)
       @env = env
-      @all = options.include?('--all')
+      @all = all
     end
 
     def ip
       active_envs = environments.map do |env|
-        if @project_re =~ env[:application_name] && env[:environment_name].include?(@env)
-          if @all || env[:health] == 'Green'
+        if @project_re =~ env[:application_name].downcase && env[:environment_name].include?(@env)
+          if @all || (env[:health] == 'Green' && env[:status] == 'Ready')
             env[:environment_name]
           end
         end
@@ -29,6 +29,25 @@ module Elastip
       end.compact
       STDERR.puts target_instances.inspect
       target_instances.map{|x| x[:ip]}
+    end
+
+    def inactive_instances(terminate: false)
+      inactive_envs = environments.map do |env|
+        if @project_re =~ env[:application_name].downcase && env[:environment_name].include?(@env)
+          if env[:cname] =~ /inactive/  && env[:status] == 'Ready'
+            env
+          end
+        end
+      end.compact
+
+      if terminate
+        inactive_envs.each do |env|
+          STDERR.puts "terminate: #{env[:environment_name]}"
+          ebs.terminate_environment(environment_name: env[:environment_name])
+        end
+      end
+
+      inactive_envs
     end
 
     private

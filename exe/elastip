@@ -9,4 +9,8 @@ if !project or !env
         "Example: elastip 'my_pro*ect' production"
 end
 
-puts Elastip::Elastip.new(project, env, options).ip.join("\n")
+if options.include?('--inactive')
+  puts Elastip::Elastip.new(project, env, all: options.include?('--all')).inactive_instances(terminate: options.include?('--terminate')).join("\n")
+else
+  puts Elastip::Elastip.new(project, env, all: options.include?('--all')).ip.join("\n")
+end
