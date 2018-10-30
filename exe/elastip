@@ -2,10 +2,10 @@
 
 require 'elastip'
 
-project, env, options = ARGV
+project, env, *options = ARGV
 options ||= []
 if !project or !env
-  abort "Usage: elastip <project name regexp> <environnement (e.g staging production)> [--all]\n" \
+  abort "Usage: elastip <project name regexp> <environnement (e.g staging production)> [--all] [--inactive] [--terminate]\n" \
         "Example: elastip 'my_pro*ect' production"
 end
 
